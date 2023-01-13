@@ -1,4 +1,8 @@
-const http=require('http') //Especifico utilizacion de API para trabajar con HTTP
+// modulo de http eliminado porque se comienza a utilizar express
+
+const { response, request } = require('express')
+const express= require ('express') // Se importa el modulo de express
+const app = express() // la instancia o app del modulo express
 
 let datos = [     //Pseudo base de datos
     {
@@ -19,16 +23,23 @@ let datos = [     //Pseudo base de datos
     }
 ]
 
-
-const app = http.createServer((request,response)=>{  //Cada vez que reciba una peticion, callback a response:
-    response.writeHead(200,{'Content-Type':'application/json'}) /*Response = estado de peticion 200 (exitoso),cabecera
-    que especifica el tipo de dato devuelto (!importante) */
-    response.end(JSON.stringify(datos)) // Termina la respuesta y devuelve el parametro entregado
-    //parsea el json para que sea legible
+app.get('/saludo',(request,response)=>{   //con una peticion tipo get , en el path '/saludo' la respuesta es...
+    response.send('<h1>Hola</h1>')
 })
+
+app.get('/datos',(request,response)=>{  // en una peticion tipo get en el path ('/datos) devuelve un json formateado
+   response.json(datos)
+})
+
+
 
 const PORT=3001 // especifica el puerto en que se ejecutara el server, usualmente es el 80 que por ser tan comun
 //no se especifica 
 
-app.listen(PORT) //le decimos al server que escuche en el puerto especifico que creamos anteriormente
-console.log('Server running on port $(PORT)') //Enviamos un mensaje al ejecutar el servidor
+app.listen(PORT,()=>{
+    console.log("server running on port ".request.PORT)
+}) 
+
+/*al igual que el server anterior, se utiliza el metodo listen y el puerto personalizado
+con la diferencia de que el server de express se inicializa de forma asincrona, por lo que
+si queremos notificar de su inicializacion se realiza mediante un callback */
